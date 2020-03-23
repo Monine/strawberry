@@ -17,7 +17,6 @@ export default {
   components: {
     RenderLayer,
     InteractionLayer,
-    // Moveable,
   },
 
   data() {
@@ -25,7 +24,7 @@ export default {
       hasMounted: false,
       editAreaStyle: {
         width: `${MOBILE_PHONE_WIDTH}px`,
-        minHeight: `${MOBILE_PHONE_HEIGHT}px`,
+        height: `${MOBILE_PHONE_HEIGHT}px`,
       },
     };
   },
@@ -37,11 +36,6 @@ export default {
 
   mounted() {
     this.hasMounted = true;
-    // Object.values(this.components).forEach(c => {
-    //   console.log(this.$refs[c.id].moveable);
-    //   this.$refs[c.id].moveable.origin = false;
-    //   this.$refs[c.id].moveable.renderDirections = ['nw', 'ne', 'sw', 'se'];
-    // });
   },
 
   methods: {
@@ -66,7 +60,7 @@ export default {
   transform: translateX(-50%);
   background: #fff;
   box-shadow: 0px 0px 8px 0px #000a3814;
-  overflow: hidden;
+  // overflow: hidden;
   user-select: none;
 }
 </style>

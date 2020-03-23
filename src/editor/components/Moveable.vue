@@ -79,9 +79,7 @@ export default {
     getScrollPosition: Function,
   },
 
-  watch: {
-    ...watchMoveableProps(),
-  },
+  watch: { ...watchMoveableProps() },
 
   mounted() {
     this.moveable = new Moveable(this.$props.container, {

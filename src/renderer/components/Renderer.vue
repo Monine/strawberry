@@ -51,10 +51,10 @@ export default {
 
 <style lang="less" scoped>
 .renderer {
-  position: relative;
+  // position: relative;
 
   .component-wrap {
-    position: absolute;
+    // position: absolute;
   }
 
   .component {

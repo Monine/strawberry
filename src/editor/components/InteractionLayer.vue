@@ -50,8 +50,12 @@ export default {
     toMoveableConf(component) {
       return {
         ...moveableConf[component.type],
-        container: this.$el,
+        container: this.$parent.$el,
+        bounds: { left: 0, top: 0, right: 375 },
+        snappable: true, // bounds 需要 snappable 才能生效
         className: `moveable-control-box__${component.id}`,
+        verticalGuidelines: [150],
+        horizontalGuidelines: [150],
       };
     },
 
