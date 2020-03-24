@@ -31,6 +31,7 @@ export default {
   .picture {
     display: block;
     width: 100%;
+    height: 100%;
   }
 
   .svg-icon {

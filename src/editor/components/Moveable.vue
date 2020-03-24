@@ -77,6 +77,9 @@ export default {
     scrollContainer: [HTMLElement, SVGElement],
     scrollThreshold: Number,
     getScrollPosition: Function,
+    isDisplaySnapDigit: Boolean,
+    snapDigit: Number,
+    zoom: Number,
   },
 
   watch: { ...watchMoveableProps() },

@@ -12,6 +12,7 @@
       }"
       v-bind="toMoveableConf(component)"
       @drag="handleDrag($event, component)"
+      @resize="handleResize($event, component)"
     >
       <div
         class="interactive"
@@ -30,9 +31,10 @@ import {
   SET_ACTIVE_COMPONENT_ID,
 } from '../store/mutation-types';
 import {
-  getMoveableControlBoxEl,
-  getActiveMoveableControlBoxEl,
+  getComponentVerticalGuideLines,
+  getComponentHorizontalGuideLines,
 } from '../helper';
+import { MOBILE_PHONE_WIDTH } from '../constants';
 
 export default {
   name: 'InteractionLayer',
@@ -41,42 +43,68 @@ export default {
     Moveable,
   },
 
-  computed: mapState({
-    components: state => state.page.components,
-    activeComponentId: state => state.page.activeComponentId,
-  }),
+  computed: {
+    ...mapState({
+      components: state => state.page.components,
+      activeComponentId: state => state.page.activeComponentId,
+    }),
+  },
 
   methods: {
-    toMoveableConf(component) {
-      return {
-        ...moveableConf[component.type],
+    toMoveableConf({ id, type }) {
+      const config = {
         container: this.$parent.$el,
-        bounds: { left: 0, top: 0, right: 375 },
+        bounds: { left: 0, top: 0, right: MOBILE_PHONE_WIDTH },
         snappable: true, // bounds 需要 snappable 才能生效
-        className: `moveable-control-box__${component.id}`,
-        verticalGuidelines: [150],
-        horizontalGuidelines: [150],
+        snapCenter: true,
+        snapVertical: true,
+        snapHorizontal: true,
+        className: `moveable-control-box__${id} ${
+          this.activeComponentId === id ? 'active' : ''
+        }`,
+        // throttleResize: 0,
+        ...moveableConf[type],
       };
+      if (this.activeComponentId === id) {
+        Object.assign(config, {
+          verticalGuidelines: getComponentVerticalGuideLines(id),
+          horizontalGuidelines: getComponentHorizontalGuideLines(id),
+        });
+      }
+      return config;
     },
 
     handleMousedownMask(id) {
-      let elControlBox = getActiveMoveableControlBoxEl();
-      if (elControlBox) elControlBox.classList.remove('active');
-
       this.$store.commit(SET_ACTIVE_COMPONENT_ID, id);
-
-      elControlBox = getMoveableControlBoxEl(id);
-      if (elControlBox) elControlBox.classList.add('active');
     },
 
-    handleDrag(drag, { id, x, y }) {
-      drag.target.style.left = `${x + drag.delta[0]}px`;
-      drag.target.style.top = `${y + drag.delta[1]}px`;
+    handleDrag({ target, left, top }, { id }) {
+      target.style.left = `${left}px`;
+      target.style.top = `${top}px`;
 
       this.$store.commit(UPDATE_COMPONENT, {
         id,
-        x: x + drag.delta[0],
-        y: y + drag.delta[1],
+        x: left,
+        y: top,
+      });
+    },
+
+    handleResize({ target, width, height, delta, direction }, { id, x, y }) {
+      target.style.width = `${width}px`;
+      target.style.height = `${height}px`;
+
+      if (direction[0] < 0) {
+        x -= delta[0];
+      }
+      if (direction[1] < 0) {
+        y -= delta[1];
+      }
+      this.$store.commit(UPDATE_COMPONENT, {
+        id,
+        x,
+        y,
+        w: width,
+        h: height,
       });
     },
   },

@@ -14,8 +14,18 @@ export const saveSandwichPage = () => {
   );
 };
 
-export const getMoveableControlBoxEl = id =>
-  document.querySelector(`.moveable-control-box__${id}`);
+export const getComponentVerticalGuideLines = id =>
+  Object.values(store.state.page.components).reduce((pre, cur) => {
+    if (id !== cur.id) {
+      pre.push(...[cur.x, cur.x + cur.w]);
+    }
+    return pre;
+  }, []);
 
-export const getActiveMoveableControlBoxEl = () =>
-  document.querySelector(`.moveable-control-box.active`);
+export const getComponentHorizontalGuideLines = id =>
+  Object.values(store.state.page.components).reduce((pre, cur) => {
+    if (id !== cur.id) {
+      pre.push(...[cur.y, cur.y + cur.h]);
+    }
+    return pre;
+  }, []);

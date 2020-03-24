@@ -37,19 +37,6 @@ export default {
   mounted() {
     this.hasMounted = true;
   },
-
-  methods: {
-    handleResize({ target, width, height, delta }) {
-      if (delta[0]) {
-        target.style.width = `${width}px`;
-        target.nextElementSibling.style.width = `${width}px`;
-      }
-      if (delta[1]) {
-        target.style.height = `${height}px`;
-        target.nextElementSibling.style.height = `${height}px`;
-      }
-    },
-  },
 };
 </script>
 
