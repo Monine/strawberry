@@ -1,7 +1,9 @@
+import { MOBILE_PHONE_HEIGHT } from '../constants';
 import {
   SET_ACTIVE_COMPONENT_ID,
   UPDATE_COMPONENT,
   SET_COMPONENTS,
+  UPDATE_EDIT_AREA_DRAG_HEIGHT,
 } from './mutation-types';
 
 export default {
@@ -10,6 +12,7 @@ export default {
     meta: {
       id: 'meta',
     },
+    editAreaDragHeight: MOBILE_PHONE_HEIGHT,
     components: {
       '7b1a78d94bd14771': {
         id: '7b1a78d94bd14771',
@@ -38,6 +41,17 @@ export default {
     },
   },
 
+  getters: {
+    editAreaHeight: state =>
+      Math.max(
+        state.editAreaDragHeight,
+        Object.values(state.components).reduce(
+          (pre, cur) => Math.max(pre, cur.y + cur.h),
+          MOBILE_PHONE_HEIGHT
+        )
+      ),
+  },
+
   mutations: {
     [SET_COMPONENTS](state, components) {
       state.components = components;
@@ -49,6 +63,10 @@ export default {
 
     [UPDATE_COMPONENT](state, payload) {
       Object.assign(state.components[payload.id], payload);
+    },
+
+    [UPDATE_EDIT_AREA_DRAG_HEIGHT](state, h) {
+      state.editAreaDragHeight = h;
     },
   },
 };

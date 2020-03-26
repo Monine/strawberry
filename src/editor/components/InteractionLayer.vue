@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import Moveable from './Moveable.vue';
 import moveableConf from '../moveable-conf';
 import {
@@ -48,13 +48,19 @@ export default {
       components: state => state.page.components,
       activeComponentId: state => state.page.activeComponentId,
     }),
+    ...mapGetters(['editAreaHeight']),
   },
 
   methods: {
     toMoveableConf({ id, type }) {
       const config = {
         container: this.$parent.$el,
-        bounds: { left: 0, top: 0, right: MOBILE_PHONE_WIDTH },
+        bounds: {
+          left: 0,
+          top: 0,
+          right: MOBILE_PHONE_WIDTH,
+          bottom: this.editAreaHeight,
+        },
         snappable: true, // bounds 需要 snappable 才能生效
         snapCenter: true,
         snapVertical: true,
@@ -99,6 +105,10 @@ export default {
       if (direction[1] < 0) {
         y -= delta[1];
       }
+
+      target.style.top = `${y}px`;
+      target.style.left = `${x}px`;
+
       this.$store.commit(UPDATE_COMPONENT, {
         id,
         x,
@@ -116,6 +126,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
+  user-select: none;
 }
 
 .moveable {

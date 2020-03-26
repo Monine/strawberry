@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { MOBILE_PHONE_WIDTH, MOBILE_PHONE_HEIGHT } from '@/editor/constants';
+import { mapState, mapGetters } from 'vuex';
+import { MOBILE_PHONE_WIDTH } from '@/editor/constants';
 import RenderLayer from './RenderLayer.vue';
 import InteractionLayer from './InteractionLayer.vue';
 
@@ -22,17 +22,24 @@ export default {
   data() {
     return {
       hasMounted: false,
-      editAreaStyle: {
-        width: `${MOBILE_PHONE_WIDTH}px`,
-        height: `${MOBILE_PHONE_HEIGHT}px`,
-      },
     };
   },
 
-  computed: mapState({
-    components: state => state.page.components,
-    activeComponentId: state => state.page.activeComponentId,
-  }),
+  computed: {
+    ...mapState({
+      components: state => state.page.components,
+      activeComponentId: state => state.page.activeComponentId,
+    }),
+
+    ...mapGetters(['editAreaHeight']),
+
+    editAreaStyle() {
+      return {
+        width: `${MOBILE_PHONE_WIDTH}px`,
+        height: `${this.editAreaHeight}px`,
+      };
+    },
+  },
 
   mounted() {
     this.hasMounted = true;
@@ -43,6 +50,7 @@ export default {
 <style lang="less" scoped>
 .edit-area {
   position: absolute;
+  z-index: 1;
   left: 50%;
   transform: translateX(-50%);
   background: #fff;
