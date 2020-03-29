@@ -4,20 +4,22 @@
       v-for="component in components"
       :id="component.id"
       :key="component.id"
+      :style="{
+        width: rem(component.w),
+        height: rem(component.h),
+      }"
       class="component-wrap"
     >
-      <!-- <slot name="before-component" :component="component" /> -->
-
       <component
         :is="componentTypes[component.type]"
         :ref="component.id"
         :component="component"
         class="component"
         :style="{
-          width: `${component.w}px`,
-          height: `${component.h}px`,
-          top: `${component.y}px`,
-          left: `${component.x}px`,
+          width: rem(component.w),
+          height: rem(component.h),
+          top: rem(component.y),
+          left: rem(component.x),
         }"
       />
     </div>
@@ -54,7 +56,7 @@ export default {
   // position: relative;
 
   .component-wrap {
-    // position: absolute;
+    position: absolute;
   }
 
   .component {

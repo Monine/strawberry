@@ -1,4 +1,4 @@
-import { MOBILE_PHONE_HEIGHT } from '../constants';
+import { MOBILE_PHONE_MIN_HEIGHT } from '../constants';
 import {
   SET_ACTIVE_COMPONENT_ID,
   UPDATE_COMPONENT,
@@ -12,7 +12,7 @@ export default {
     meta: {
       id: 'meta',
     },
-    editAreaDragHeight: MOBILE_PHONE_HEIGHT,
+    editAreaDragHeight: MOBILE_PHONE_MIN_HEIGHT,
     components: {
       '7b1a78d94bd14771': {
         id: '7b1a78d94bd14771',
@@ -42,14 +42,14 @@ export default {
   },
 
   getters: {
-    editAreaHeight: state =>
-      Math.max(
-        state.editAreaDragHeight,
-        Object.values(state.components).reduce(
-          (pre, cur) => Math.max(pre, cur.y + cur.h),
-          MOBILE_PHONE_HEIGHT
-        )
+    componentsHeight: state =>
+      Object.values(state.components).reduce(
+        (pre, cur) => Math.max(pre, cur.y + cur.h),
+        MOBILE_PHONE_MIN_HEIGHT
       ),
+
+    editAreaHeight: (state, getters) =>
+      Math.max(state.editAreaDragHeight, getters.componentsHeight),
   },
 
   mutations: {

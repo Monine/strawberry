@@ -12,6 +12,7 @@ import {
   ColorPicker,
   InputNumber,
   Message,
+  Tooltip,
 } from 'element-ui';
 
 Vue.prototype.$ELEMENT = { size: 'small' };
@@ -27,5 +28,6 @@ Vue.use(RadioButton);
 Vue.use(Switch);
 Vue.use(ColorPicker);
 Vue.use(InputNumber);
+Vue.use(Tooltip);
 
 Vue.prototype.$message = Message;

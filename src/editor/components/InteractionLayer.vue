@@ -5,10 +5,10 @@
       :key="component.id"
       class="moveable"
       :style="{
-        width: `${component.w}px`,
-        height: `${component.h}px`,
-        top: `${component.y}px`,
-        left: `${component.x}px`,
+        width: rem(component.w),
+        height: rem(component.h),
+        top: rem(component.y),
+        left: rem(component.x),
       }"
       v-bind="toMoveableConf(component)"
       @drag="handleDrag($event, component)"
@@ -85,8 +85,8 @@ export default {
     },
 
     handleDrag({ target, left, top }, { id }) {
-      target.style.left = `${left}px`;
-      target.style.top = `${top}px`;
+      target.style.left = this.rem(left);
+      target.style.top = this.rem(top);
 
       this.$store.commit(UPDATE_COMPONENT, {
         id,
@@ -96,8 +96,8 @@ export default {
     },
 
     handleResize({ target, width, height, delta, direction }, { id, x, y }) {
-      target.style.width = `${width}px`;
-      target.style.height = `${height}px`;
+      target.style.width = this.rem(width);
+      target.style.height = this.rem(height);
 
       if (direction[0] < 0) {
         x -= delta[0];
@@ -106,8 +106,8 @@ export default {
         y -= delta[1];
       }
 
-      target.style.top = `${y}px`;
-      target.style.left = `${x}px`;
+      target.style.top = this.rem(y);
+      target.style.left = this.rem(x);
 
       this.$store.commit(UPDATE_COMPONENT, {
         id,
@@ -123,10 +123,11 @@ export default {
 
 <style lang="less" scoped>
 .interaction-layer {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  user-select: none;
 }
 
 .moveable {

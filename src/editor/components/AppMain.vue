@@ -1,20 +1,26 @@
 <template>
   <el-main>
-    <section class="top-blank"></section>
+    <section class="top-blank" :style="blankStyle"></section>
 
     <div class="edit-area-wrap" :style="{ height: `${editAreaHeight}px` }">
-      <div class="knob knob-top" data-knob="top"></div>
       <EditArea />
-      <div class="knob knob-bottom" data-knob="bottom"></div>
+      <div
+        class="knob knob-bottom"
+        data-knob="bottom"
+        :style="knobStyle"
+        @dblclick="handleDblclickBottomKnob"
+      ></div>
     </div>
 
-    <section class="bottom-blank"></section>
+    <section class="bottom-blank" :style="blankStyle"></section>
   </el-main>
 </template>
 
 <script>
-import EditArea from './EditArea.vue';
 import { mapGetters } from 'vuex';
+import EditArea from './EditArea.vue';
+import { BLANK_HEIGHT, KNOB_HEIGHT } from '../constants';
+import { UPDATE_EDIT_AREA_DRAG_HEIGHT } from '../store/mutation-types';
 
 export default {
   name: 'AppMain',
@@ -23,7 +29,24 @@ export default {
     EditArea,
   },
 
-  computed: mapGetters(['editAreaHeight']),
+  data() {
+    this.blankStyle = { height: `${BLANK_HEIGHT}px` };
+    this.knobStyle = { height: `${KNOB_HEIGHT}px` };
+    return {};
+  },
+
+  computed: {
+    ...mapGetters(['editAreaHeight']),
+  },
+
+  methods: {
+    handleDblclickBottomKnob() {
+      this.$store.commit(
+        UPDATE_EDIT_AREA_DRAG_HEIGHT,
+        this.$store.getters.componentsHeight
+      );
+    },
+  },
 };
 </script>
 
@@ -67,10 +90,5 @@ export default {
   bottom: -16px;
   border-radius: 0 0 64px 64px;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
-}
-
-.top-blank,
-.bottom-blank {
-  height: 80px;
 }
 </style>

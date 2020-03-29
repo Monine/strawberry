@@ -15,6 +15,7 @@
 <script>
 import AppHeader from './components/AppHeader.vue';
 import AppMain from './components/AppMain.vue';
+import registerMouseEvent from './register-mouse-event';
 
 export default {
   name: 'App',
@@ -29,6 +30,10 @@ export default {
       showPreview: false,
     };
   },
+
+  mounted() {
+    registerMouseEvent(this.$store);
+  },
 };
 </script>
 
@@ -37,6 +42,8 @@ export default {
 
 <style lang="less" scoped>
 #app {
+  display: flex;
+  flex-direction: column;
   height: 100%;
 
   > .el-container {

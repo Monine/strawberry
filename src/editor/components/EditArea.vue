@@ -55,7 +55,5 @@ export default {
   transform: translateX(-50%);
   background: #fff;
   box-shadow: 0px 0px 8px 0px #000a3814;
-  // overflow: hidden;
-  user-select: none;
 }
 </style>

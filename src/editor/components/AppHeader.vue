@@ -1,5 +1,5 @@
 <template>
-  <el-header class="app-header" height="64px">
+  <el-header class="app-header" :height="HEADER_HEIGHT">
     <svg-icon filename="strawberry" />
     <div class="right">
       <svg-icon filename="save" @click.native="handleClickSave" />
@@ -9,10 +9,16 @@
 </template>
 
 <script>
+import { HEADER_HEIGHT } from '../constants';
 import { saveSandwichPage } from '../helper';
 
 export default {
   name: 'AppHeader',
+
+  data() {
+    this.HEADER_HEIGHT = String(HEADER_HEIGHT);
+    return {};
+  },
 
   methods: {
     async handleClickSave() {
